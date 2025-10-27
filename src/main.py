@@ -1,4 +1,4 @@
-from .calculator.Calculator import Calculator
+from .calculator import Calculator
 
 def main():
     # instantiate calculators
@@ -15,7 +15,7 @@ def main():
     print(f' 2: c2.add(8, 3)\t-> {c2.add(8, 3)}')
     print(f' 3: c1.add("1", "1")\t-> {c1.add("1", "1")}')     # <-- uncomment
     # Because when written in "" it is a string, not a number and it will concatenate both the strings
-    # print(f' 4: c1.add("X", "V")\t-> {c1.add("X", "V")}')
+    print(f' 4: c1.add("X", "V")\t-> {c1.add("X", "V")}')
     print(f' 5: c2.factorize(99)\t-> {c1.factorize(99)}')
     _offset=6
     # 

@@ -85,10 +85,16 @@ class Calculator:
             raise ValueError("Cannot divide by zero.")
         return self.getNumber(a) / self.getNumber(b)
     
-    def factorize(self,num):
+    def factorize(self,n):
+        n = self.getNumber(n)
+        i = 2
         factors = []
-        num = self.getNumber(num)
-        for i in range(2, num + 1):
-            if num % i == 0:
+        while i * i <= n:
+            if n % i:
+                i += 1
+            else:
+                n //= i
                 factors.append(i)
+        if n > 1:
+            factors.append(n)
         return factors
