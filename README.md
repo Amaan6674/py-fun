@@ -1,719 +1,366 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- Solution of Assignment A2 (CS4BD)
--->
-## Solution A2: Creating a *Python*-Project
-
-
+## Assignment B1: Python Expressions & Unit Tests &nbsp; (10 Pts)
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-The assignment shows good practices how to create and structure a *Python*
-project. Few rules should be followed when creating a new software development.
-They generally apply, regardless of the programming language:
 
-- source code resides in the `src` directory (sub-tree) in the project
-    directory.
+The assignment demonstrates Python's powerful *"one-liner"* expressions.
 
-- test code (unit tests) is always separated from the source code and typically
-    resides in a `tests` directory (sub-tree).
+### Challenges
+- [Step 1:](#1-create-new-branch-b1-expressions) Create new Branch: `b1-expressions`
+- [Step 2:](#2-run-code) Run Code
+- [Step 3:](#3-run-unit-tests) Run Unit Tests
+- [Step 4:](#4-write-expressions) Write Expressions
+- [Step 5:](#5-final-test-and-sign-off) Final Test and sign-off
+- [Step 6:](#6-check-branch-into-you-remote-repository) Check Branch into your remote Repository
 
-- each, `src` and `tests`, have sub-directories to further structure the source
-    code. The structure underneath `tests` mirrors the structure under `src`.
-
-- only source code is under code management (e.g. *git*), no built artifacts,
-    tools or binaries.
-
-- a *build-process* must be defined and communicated in a project such that
-    the project can be *"built"* any time from scratch.
-
-*Python* does not assume or enforces (unlike Java/maven) any structure of a
-software development project.
-
-Read article by Ken Reitz:
-[*"Structuring Your Project"*](https://docs.python-guide.org/writing/structure)
-to learn about *best-practices* that should be followed in *Python* according to
-Ken Reitz (obviously, this particular approach can be debated, but it is quite
-common).
-
----
-
-Goal of this assignment is to set-up a new *Python* project following the guidance
-from the article.
-The project will create two components, a *"Calculator"* with methods:
-
-- *add(a, b)* - return the sum of *a* and *b*, 
-
-- *sub(a, b)* - subtract *b* from *a*,
-
-- *mul(a, b)* - multiply *a* and *b*,
-
-- *div(a, b)* - divide *a* by *b*,
-
-- *factorize( n )* - return prime factors of *n*.
-
-*"Calculator"* is a singleton component.
-
-
-*"Collection"* provides *list* and *set* methods:
-
-- *contains( s, e )* - calculate the number of times element *e* is in *s*,
-
-- *zip(s, p)* - pair consequitive elements from *s* and *p*,
-
-- *pset( s )* - calculate the powerset of *s*,
-
-- *perm( p )* - calculate permutations of *p*,
-
-*"Collection"* is an instantiatable component.
-
-
----
-Steps:
-
-1. Step: [*Answer Questions for Python Project-Setup*](#1-answer-questions-for-python-project-setup).
-
-1. Step: [*Create project: "py-fun"*](#2-create-project-py-fun).
-
-1. Step: [*Build the Project*](#3-build-the-project).
-
-1. Step: [*Create the Calculator*](#4-create-the-calculator).
-
-1. Step: [*Run the Calculator*](#5-run-the-calculator).
-
-1. Step: [*Extend the Calculator*](#6-extend-the-calculator).
-
-1. Step: [*Check Project into Local git Repository*](#7-check-project-into-local-git-repository).
-
-1. Step: [*Push Project to Remote *git* Repository*](#8-push-project-to-remote-git-repository).
-
-1. Step: [*Unit Tests*](#9-unit-tests).
-<!-- 
-1. Step: [*Release*](#10-release).
-    - build distributable package, actually release 'make build'
--->
+Points: [1, 2, 3, 0, 3, 1]
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 &nbsp;
----
-### 1. Answer Questions for *Python* Project-Setup
 
-1. What is the *project scaffold*?
+### 1.) Create new local Branch: `b1-expressions` from remote
 
-1. What is a software *build process*?
+Create a new branch: `b1-expressions` in the project of the previous assignment:
+[*py-fun*](https://github.com/sgra64/py-fun).
 
-1. When does the software *build process* start and when does it end?
+Check-out files from the remote branch:
+[*https://github.com/sgra64/py-fun/tree/b1-expressions*](https://github.com/sgra64/py-fun/tree/b1-expressions):
 
-1. What are steps and what is the result of the software *build process*?
+1. fetch branch from the remote,
 
-1. What is *make*?
-
-1. What is the purpose of file *requirements.txt*? How is it used?
-
-1. What is a *Build Server*? What does it mean for *Python*?
-
-1. What are *Nightly Builds*?
-
-1. What are the differences between
-    [*"Scripts, Modules, Packages, and Libraries"*](https://realpython.com/videos/scripts-modules-packages-and-libraries)
-    in *Python*?
-
-1. What is *_ _ _init_ _ _.py* meant to be used for?
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 2. Create Project: "py-fun"
-
-Find a proper workspace (directory) on your laptop to host the new project:
-
-```sh
-# cd to the directory where you store your Python projects
-cd <path-to-workspace>
-
-mkdir py-fun                    # create the new project 'py-fun'
-
-cd py-fun                       # cd into the new project
-
-mkdir -p src/calculator             # make the directory for the 'Calculator'
-mkdir -p tests/calculator           # make directory for 'Calculator' tests
-
-url="https://raw.githubusercontent.com/sgra64/py-fun/refs/heads/main"
-curl -o makefile $url/makefile          # fetch 'makefile' from URL
-curl -o requirements.txt $url/requirements.txt
-curl -o main.py $url/main.py            # fetch 'main.py' from URL
-curl -o src/main.py $url/src/main.py    # fetch 'src/main.py'
-curl -o src/__init__.py $url/src/__init__.py
-
-mkdir docs                      # create the docs directory
-# fetch content of docs directory
-
-mkdir .vscode                   # create the .vscode directory
-# fetch content of .vscode directory
-
-find .                          # show project scaffold
-```
-
-Output shows the files of the project:
-
-```
-./docs
-./docs/conf.py
-./docs/index.rst
-./docs/makefile
-./main.py
-./makefile
-./requirements.txt
-./results.txt
-./src
-./src/calculator
-./src/__init__.py
-./src/main.py
-./tests
-./tests/calculator
-```
+1. check-out as local branch: `b1-expressions`.
 
 <!-- 
-mkdir docs                      # fetch content of docs directory
-curl -o docs/conf.py   $url/docs/conf.py
-curl -o docs/index.rst $url/docs/index.rst
-curl -o docs/makefile  $url/docs/makefile
-
-mkdir .vscode                   # fetch content of .vscode directory
-curl -o .vscode/settings.json $url/.vscode/settings.json
-curl -o .vscode/launch.json   $url/.vscode/launch.json
-curl -o .vscode/launch-terminal.json $url/.vscode/launch-terminal.json
--->
-
-The diagram shows the project scaffold:
-
-```sh
-<workspace>             # workspace with Python projects
- |
- +-<py-fun>                 # project directory
- |  |
- |  +-<.vscode>                 # settings files for VSCode IDE
- |  |   +--settings.json
- |  |   +--launch.json
- |  |   +--launch-terminal.json
- |  |
- |  +--makefile                 # project build file
- |  +--requirements.txt         # installation dependencies
- |  +--setup.py                 # python build (create distributabe package)
- |  +--main.py                  # main python file, launches 'src/main.py'
- |  +--results.txt              # output with expected results
- |  |
- |  +-<src>                     # project source code
- |  |  +--__init.py__           # package file
- |  |  +--main.py               # actual main.py file that runs code
- |  |  +-<calculator>           # sub-directory for 'Calculator' source code
- |  |
- |  +-<tests>                   # project test code
- |  |  +-<calculator>           # sub-directory for 'Calculator' test code
- |  |
- |  +-<docs>                    # project documentation
- |  |  +--makefile              # documentation build file
- |  |  +--conf.py, index.rst    # other files in 'docs'
- |  |
- |  |
- |  +-<build>                   # project build folder (created content goes here)
- |  |  +-- py-fun-SNAPSHOT-0.1.0.tar    # artifact created by the build process
- |  |  |
- |  |  +-<lib>                  # content to package to final artifact
- |  |     +-<src>               # source code to package as final artifact
- |  |     +-<tests>             # tests performed before packaging
- |  |     +-<html>              # docs to package with final artifact
- ```
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 3. Build the Project
-
-The *build process* transforms source code into an executable artifact (for
-*Python*, this is packaged source code, see
-[*Package Formats*](https://packaging.python.org/en/latest/discussions/package-formats/)
-) that can be released, distributed, deployed and executed.
-A source distribution is recognized by its file name, which has the form *package_name-version.tar.gz*, e.g., *pip-23.3.1.tar.gz*.
-
-The *Build Process*:
-
-- *begins* at the point when source code is present and ready for compilation,
-
-- it *ends* when the executable artifact has been created, e.g. a *.tar* file
-    *package_name-version.tar.gz*.
-
-Steps of the *Build Process* are:
-
-1. Acquisition of dependencies (required libraries, packages) -- in *Python*,
-    dependencies are aquired transitively (including dependencies required
-    by dependencies) by package managers such as
-    [*pip*](https://pypi.org/project/pip)
-    from a central repository such as the
-    [*Python Package Index (PyPI)*](https://pypi.org).
-
-1. Running Unit tests.
-
-1. Packaging to the *"executable artifact"*, e.g. *package_name-version.tar.gz*.
-
-For the project, steps of the *Build Process* are implemented as *make* goals
-in the [*makefile*](makefile):
-
-1. Dependencies are implicitely acquired with every *Maven* command.
-
-1. `make install` -- installs all dependencies from file
-    [*requirements.txt*](requirements.txt).
-
-1. `make run` -- run program [*main.py*](main.py)
-
-1. `make tests` -- perform tests.
-
-1. `make package` -- package project into artifact:
-    *py-fun-SNAPSHOT-0.1.0.tar*.
-
-Content created during *build* steps is saved in the *build* folder:
-
-- `build/lib/src` -- *Python* code for packaging.
-
-- `build/lib/tests` -- *Python* tests.
-
-- `build/lib/html` -- *Python* docs.
-
-- `py-fun-SNAPSHOT-0.1.0.tar` -- the final *artifact* created by the *build process*.
-
-Command `make build` performs the complete build process:
-
-```sh
-make -n build           # show all build steps to perform (-n: no execution)
-
-make build              # perform all build steps
-```
-
-*Python* has several packaging formats:
-
-- [*Wheel*](https://pydevtools.com/handbook/reference/wheel)
-    -- a pre-built binary distributions that can be installed with *pip* or *uv*.
-
-- [*sdist*](https://pydevtools.com/handbook/reference/sdist)
-    -- source distribution, which is a package format for source code that may need
-    to be built during installation.
-
-- [*Conda packages*](https://pydevtools.com/handbook/reference/conda)
-    -- a format specific to Conda that can include *non-Python* components.
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 4. Create the *Calculator*
-
-Create a component called *Calculator* in `src/calculator` such that it
-provides the indicated functions such that it can be imported and used in
-[*src/main.py*](src/main.py):
-
-```py
-from .calculator import Calculator
-
-def main():
-    # instantiate calculators
-    c1 = Calculator()
-    c2 = Calculator()
-    # 
-    print(f' 1: c1.add(1, 2)\t-> {c1.add(1, 2)}')
-    print(f' 2: c2.add(8, 3)\t-> {c2.add(8, 3)}')
-```
-
-*Python* organizes code as:
-
-- [*Functions*](https://www.w3schools.com/python/python_functions.asp)
-    -- a function is a block of code with a name and arguments that runs
-    when it is called. A function can return data as a result.
-
-- [*Modules*](https://docs.python.org/3/tutorial/modules.html)
-    -- a module is a file containing Python definitions and statements.
-
-- [*Packages*](https://packaging.python.org/en/latest/tutorials/packaging-projects)
-    -- a package is a container for distribution that is stored in a
-    package/artifact repository from where packages can be fetched and
-    installed by a *package manager*.
-
-- [*Classes*](https://docs.python.org/3/tutorial/classes.html)
-    -- classes bundle data and functionality. Creating a new class creates
-    a new type of object, allowing new instances of that type to be made.
-    Each class instance can have attributes attached to it (state).
-    Class instances can also have methods (defined by its class) for
-    modifying its state.
-
-    Python distinguishes between:
-
-    - [*3.2.8.8. Classes*](https://docs.python.org/3/reference/datamodel.html#classes)
-        -- classes are callable. These objects normally act as factories for new
-        instances of themselves, but variations are possible for class types that
-        override __new__(). The arguments of the call are passed to __new__() and,
-        in the typical case, to __init__() to initialize the new instance.
-
-    - [*3.2.8.9. Class Instances*](https://docs.python.org/3/reference/datamodel.html#class-instances)
-        --  instances of classes can be made callable by defining a __call__()
-        method in their class.
-
-- [*Objects*, *Values* and *Types*](https://docs.python.org/3/reference/datamodel.html):
-
-    - *Objects* are *Python’s* abstraction for *all data* (*"everything is
-        an object"*).
-
-    - *Values* are data elements from ranges defined by types.
-
-    - All objects have *Types*. Classes are just *custom types*, see
-        [*What is an Object in Python?*](https://stackoverflow.com/questions/56310092/what-is-an-object-in-python).
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 5. Run the *Calculator*
-
-Run the *Calculator* from the project directory:
-
-```sh
-make run                # run "the project" ('main.py' in the project directory)
-
-python main.py          # run 'main.py' in the project directory directly
-```
-
-Output shows the correct results:
-
-```
- 1: c1.add(1, 2)        -> 3
- 2: c2.add(8, 3)        -> 11
-```
-
-Remove the comment following calculation `2:` in [*src/main.py*](src/main.py):
-
-```py
-print(f' 3: c1.add("1", "1")\t-> {c1.add("1", "1")}')     # <-- uncomment
-# print(f' 4: c1.add("X", "V")\t-> {c1.add("X", "V")}')
-# print(f' 5: c2.factorize(99)\t-> {c1.factorize(99)}')
-```
-
-Run the code:
-
-```
- 1: c1.add(1, 2)        -> 3
- 2: c2.add(8, 3)        -> 11
- 3: c1.add("1", "1")    -> 11
-```
-
-Why does calculation `add("1", "1")` yields `11` and not as expected `2`?
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 6. Extend the *Calculator*
-
-Fix the problem such that the calculation before returns the expected value `2`.
-
-The following calculations show that *Calculator* has extended capabilities:
-
-- *Calculator* understands names of *single-digit* numbers in *English*,
-    *German*, *Spanish*, *Russian* (in *Cyrillic*) and *Chinese*.
-    
-    Examples:
-
-    - *c1.add("one", "four")* --> `5`,
-    - "drei" + 9 --> `12`, "четыре" + "eight" --> `12`,
-    - "三" (3) + "四" (4) --> 7.
-
-- *Calculator* also understands *Latin* *single-digit* numbers.
-
-    Examples:
-
-    - "I" + "II" -> `3`, "V" + "IV" -> `9`, "VIII" / "II" -> `4`.
-
-- Method *factorize( n )* returns prime factors of *n*.
-
-    Examples:
-
-    - 17: c2.factorize("три")       -> [3] (prime number),
-    - 18: c2.factorize("X")         -> [2, 5]
-    - 19: c2.factorize("ocho")      -> [2, 2, 2]
-    - 20: c2.factorize(3+5)         -> [2, 2, 2]
-    - 22: c2.factorize(1092)        -> [2, 2, 3, 7, 13]
-    - 23: c2.factorize(32768)       -> [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-    - 24: c2.factorize(10952347)    -> [7, 23, 59, 1153]
-    - 25: c2.factorize(100000039)   -> [100000039] (prime number).
-
-Improve the *Calculator* such that it meets these extended capabilities.
-
-Validate your implementation by running all examples in [*src/main.py*](src/main.py).
-Enable the expressions list.
-
-```py
-# set True to run the examples from the expression list
-_run_list=True
-expr=[
-    'c1.add("1", "1.600")',         # 2.6
-    'c1.add("three", "1.600")',     # 4.6
-    'c1.add("cinco", "siete")',     # 12
-    'c1.add("семь", "восемь")',     # 15
-    'c1.add("III", "   VIII")',     # 11
-    'c1.add("三", "五")',            # 8
-    'c1.add("0", "X")',             # 10
-    'c2.add("ocho", "nueve")',      # 17
-    'c2.sub("ocho", "nueve")',      # -1
-    'c2.mul("ocho", "nueve")',      # 72
-    'c2.div("ocho", "dos")',        # 4.0
-    '',
-    'c2.factorize("три")',          # [3]
-    'c2.factorize("X")',            # [2, 5]
-    'c2.factorize("ocho")',         # [2, 2, 2]
-    'c2.factorize(3+5)',            # [2, 2, 2]
-    'c2.factorize(27)',             # [3, 3, 3]
-    'c2.factorize(1092)',           # [2, 2, 3, 7, 13]
-    'c2.factorize(32768)',          # [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-    'c2.factorize(10952347)',       # [7, 23, 59, 1153]
-    'c2.factorize(100000039)',      # [100000039] (prime number)
-    '',
-] if _run_list else []
-```
-
-Correct results can also be found in [*results.txt*](results.txt).
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 7. Check Project into Local *git* Repository
-
-Create local *git* repository and initialize with *empty root commit*:
-
-```sh
-git init --initial-branch=main      # create local git repository
-
-git commit --allow-empty -m "root commit (empty)"
-git tag root                        # tag commit with "root"
-```
-
-Create file
-[*.gitignore*](https://github.com/sgra64/se1-play/blob/main/.gitignore)
-and commit:
-
-```sh
-curl --output .gitignore \
-    "https://raw.githubusercontent.com/sgra64/se1-play/refs/heads/main/.gitignore"
-
-git add -f .gitignore && git commit -m "add .gitignore"
-
-git log --oneline                   # show commit log
-```
-```
-e83b77d add .gitignore
-5439cbf (tag: root) root commit (empty)
-```
-
-Commit: `.vscode` with message: *"add .vscode"*.
-
-Commit files: `makefile`, `requirements.txt` with message: *"add makefile,
-requirements.txt"*.
-
-Complete commits such that you have the following commit log:
-
-```sh
-git log --oneline                   # show commit log
-```
-```
-6e81be7 (HEAD -> main) add main.py, src/main.py, src/__init__.py, results.txt
-a8ff4f4 add docs
-fc0f7fc add setup.py
-8404050 add makefile, requirements.txt
-f3fd353 add .vscode
-4718c64 add .gitignore
-5439cbf (tag: root) root commit (empty)
-```
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 8. Push Project to Remote *git* Repository
-
-Find out how to push a locally created project into a remote *git* repository.
-Set up remote repository with public SSH key access.
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-&nbsp;
----
-### 9. Unit Tests
-
-to follow...
-
-<!-- 
-Create unit tests for method: *factorize(int n)* with tests:
-
-1. *regular cases:* n=1, n=2, n=3, n=4, n=27, n=65536, n=10952347, n=100000039 (prime number).
-
-1. *corner cases (valid):* n=0, n=2147483646 (MAX_INT-1), n=2147483647 (MAX_INT) -- corner cases test valid input boundaries.
-
-1. *error and exception cases (invalid):* n=-1, n=-10, n=-2147483648 -- exception cases test that the factorize(int n) method throw an IllegalArgumentException with message: negative argument.
-
-Create a new test class:
+Inspect files and figure out their purpose. Write 1-2 sentenses what each file means
+and purpose is:
+
+ - [__init __.py](https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/blob/main/C_expressions/__init__.py)
+    : `_____________________________________`
+ 
+     - What does the init-file contain?
+     - When and how often is this file executed?
+
+ - [expressions.py](https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/blob/main/C_expressions/expressions.py)
+    : `__________________________________`
+
+ - [test_expressions.py](https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/blob/main/C_expressions/test_expressions.py)
+    : `______________________________`
  -->
+(1 Pt)
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- 
-&nbsp;
-
-### 10. Release
-
-Create release branch:
-
-```sh
-git switch main                     # switch to the 'main' branch
-git checkout -b release             # branch new 'release' branch off the 'main' branch
-git branch                          # show branches
-```
-
-Change GAV-coordinates in *pom.xml* for the *artifactId* from `my-app` to `factorizer`
-and for *version* from `1.0-SNAPSHOT` to `RELEASE-1.0.0`:
-```xml
-<groupId>de.factorizer</groupId>
-<artifactId>factorizer</artifactId>
-<version>RELEASE-1.0.0</version>
-```
-
-Commit the change to the release-branch:
-```sh
-git add . && git commit -m "update pom.xml, GAV to 'de.factorizer' 'RELEASE-1.0.0'"
-```
-
-The development is on branch `factorizer` and needs to be merged to the
-`release` branch.
-
-See the changes of the upcoming merge of the *factorizer* branch
-to the *release* branch:
-
-```sh
-git diff HEAD..factorizer --name-status
-```
-```
-M   pom.xml
-D   src/main/java/com/mycompany/app/App.java
-A   src/main/java/de/factorizer/App.java
-A   src/main/java/de/factorizer/Factorizer.java
-A   src/main/java/de/factorizer/FactorizerImpl.java
-R086src/test/java/com/mycompany/app/AppTest.java   src/test/java/de/factorizer/AppTest.java
-A   src/test/java/de/factorizer/FactorizerTests.java
-```
-
-Merge branch `factorizer` to the `release` branch:
-```sh
-git merge factorizer
-```
-```
-Auto-merging pom.xml
-CONFLICT (content): Merge conflict in pom.xml
-Automatic merge failed; fix conflicts and then commit the result.
-```
-
-Resolve the merge conflict and rebuild to verify everything works:
-```sh
-mvn clean package
-
-java -jar target/factorizer-RELEASE-1.0.0.jar 10 100 1000
-```
-```
-Error: Could not find or load main class com.mycompany.app.App
-Caused by: java.lang.ClassNotFoundException: com.mycompany.app.App
-```
-
-Fix the bug, rebuild and re-run:
-
-```sh
-# fix: <mainClass>de.factorizer.App</mainClass>
-mvn clean package
-
-java -jar target/factorizer-RELEASE-1.0.0.jar 31 961 29791 923521
-```
-```
-Hello Factorizer!
- - n=31 -> [31] (prime number)
- - n=961 -> [31, 31]
- - n=29791 -> [31, 31, 31]
- - n=923521 -> [31, 31, 31, 31]
-```
-
-Commit the open merge and tag the release commit:
-
-```sh
-git add pom.xml && git commit -m "merge branch factorizer"
-
-git tag "RELEASE-1.0.0"
-
-# show log of merged branch
-git log --oneline --all --graph
-```
-```
-*   ef40d7a (HEAD -> release, tag: RELEASE-1.0.0) merge branch factorizer
-|\
-| * cba7669 (factorizer) add FactorizerTests
-| * b2ac291 refactoring groupId: "de.factorizer"
-| * 2fe6eeb add Factorizer
-* | 39fe1b8 update pom.xml, GAV to 'de.factorizer' 'RELEASE-1.0.0'
-|/
-* 52c981d (main) add pom.xml src
-* b97a250 add .gitignore
-* fb58d32 (tag: root) root commit (empty)
-```
-
-<img src="https://raw.githubusercontent.com/sgra64/mvn-fun/refs/heads/markup/img/git-log-after-merge.png" width="600"/>
 
 &nbsp;
 
-Double-check the code builds cleanly and works for the release:
+### 2.) Run Code
+
+Run file `main.py` in your IDE and in the terminal:
+```
+numbers: [4, 12, 3, 8, 17, 12, 1, 8, 7]
+#
+a) number of numbers: 9
+b) first three numbers: []
+c) last three numbers: []
+d) last three numbers reverse: []
+e) odd numbers: []
+f) number of odd numbers: 0
+g) sum of odd numbers: 0
+h) duplicate numbers removed: []
+i) number of duplicate numbers: 0
+j) ascending, de-dup (n^2) numbers: []
+k) length: NEITHER
+```
+(1 Pt)
+
+Implement functions one after another in
+[*src/expressions/expressions.py*](src/expressions/expressions.py)
+to achieve the final result. Use only *"one-liner"* expressions:
 
 ```sh
-mvn clean compile           # clean rebuild before running the code
+numbers: [4, 12, 3, 8, 17, 12, 1, 8, 7]
+#
+a) number of numbers: 9
+b) first three numbers: [4, 12, 3]
+c) last three numbers: [1, 8, 7]
+d) last three numbers reverse: [7, 8, 1]
+e) odd numbers: [3, 17, 1, 7]
+f) number of odd numbers: 4
+g) sum of odd numbers: 28
+h) duplicate numbers removed: [1, 3, 4, 7, 8, 12, 17]
+i) number of duplicate numbers: 2
+j) ascending, de-dup (n^2) numbers: [1, 9, 16, 49, 64, 144, 289]
+k) length: ODD_LIST
+```
+(1 Pt)
 
-mvn test                    # run unit tests -> BUILD SUCCESS
+Uncomment the second expression `e2` in 
+[*src/expressions/expressions.py*](src/expressions/expressions.py)
+and re-run. Two expression objects operate on two input lists:
 
-java de.factorizer.App 3 27 1092 65536 10952347 100000039
+```
+numbers: [4, 12, 3, 8, 17, 12, 1, 8, 7]
+#
+a) number of numbers: 9
+b) first three numbers: [4, 12, 3]
+c) last three numbers: [1, 8, 7]
+d) last three numbers reverse: [7, 8, 1]
+e) odd numbers: [3, 17, 1, 7]
+f) number of odd numbers: 4
+g) sum of odd numbers: 28
+h) duplicate numbers removed: [1, 3, 4, 7, 8, 12, 17]
+i) number of duplicate numbers: 2
+j) ascending, de-dup (n^2) numbers: [1, 9, 16, 49, 64, 144, 289]
+k) length: ODD_LIST
+
+numbers: [1, 4, 6, 67, 6, 8, 23, 8, 34, 49, 67, 6, 8, 23, 37, 67, 6, 34, 19, 67,
+ 6, 8]
+#
+a) number of numbers: 22
+b) first three numbers: [1, 4, 6]
+c) last three numbers: [67, 6, 8]
+d) last three numbers reverse: [8, 6, 67]
+e) odd numbers: [1, 67, 23, 49, 67, 23, 37, 67, 19, 67]
+f) number of odd numbers: 10
+g) sum of odd numbers: 420
+h) duplicate numbers removed: [1, 34, 67, 4, 37, 6, 8, 49, 19, 23]
+i) number of duplicate numbers: 12
+j) ascending, de-dup (n^2) numbers: [1, 16, 36, 64, 361, 529, 1156, 1369, 2401,
+4489]
+k) length: EVEN_LIST
+```
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+&nbsp;
+
+### 3.) Run Unit Tests
+Unit Tests are used to *"test-a-unit"* of code in isolation. This unit can be
+a function, a file, a class, a module.
+
+In contrast to running code regularly, Unit Tests execute under the
+supervision of a `test runner` that:
+
+ - looks for (discovers) tested units,
+
+ - executes them with test data, collects test results regardless
+    whether a test succeeded or failed and
+
+ - reports test results at the and.
+
+Read *"A Beginner’s Guide to Unit Tests in Python"*,
+[link](https://www.dataquest.io/blog/unit-tests-python/),
+and answer questions:
+
+ - How are tests discovered? Which feature makes the test runner to collect
+    something as a test?
+
+ - What is an
+    [assert](https://docs.python.org/3/library/unittest.html#assert-methods)
+    statement? What happens when a test (assert) passes and fails?
+
+ - Where is the test runner started in given files?
+
+(1 Pt)
+
+Run tests in a terminal. Currently, only one test runs and passes:
+*TestCase_a_number_of_numbers* :
+```sh
+python test_expressions.py      # run tests directly from file calling the
+                                # test runner in __main__
 ```
 
 Output:
 
 ```
-Hello Factors!
- - n=3 -> [3] (prime number)
- - n=27 -> [3, 3, 3]
- - n=1092 -> [2, 2, 3, 7, 13]
- - n=65536 -> [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
- - n=10952347 -> [7, 23, 59, 1153]
- - n=100000039 -> [100000039] (prime number)
+test_a_number_of_numbers (C_expressions.test_expressions.TestCase_a_number_of_nu
+mbers.test_a_number_of_numbers) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+<unittest.runner.TextTestResult run=1 errors=0 failures=0>
+```
+Result: 1 test was performed that passed.
+
+Alternatively, run tests with test discovery. Run the unit test module that
+starts the test runner, which in turn discovers tests that are then executed:
+
+```sh
+python -m unittest              # let test runner discover tests
+```
+Output is the same as above.
+
+(1 Pt)
+
+Configure your IDE so it runs Unit Tests (you can use other IDE than VS Code
+that is used here as example).
+
+VSCode discovers unit tests under the test glass icon (red circled).
+
+The figure shows one unit test that has been discovered passing. Unit tests are
+structured as *"TestCase - Classes"*, which are classes that inherit from class:
+[unittest.TestCase](https://docs.python.org/3/library/unittest.html#unittest.TestCase),
+in the example indirectly through class `Test_case_a`.
+
+VSCode shows discovered test classes in the left panel and their execution result
+with a green check mark when passed or a red cross when failed.
+
+![](../markup/img/C_unit_tests_1.png)
+
+Uncomment tests: *"Test_case_b"* and *"Test_case_c"* in `test_expressions.py`
+above and re-run tests.
+Both tests should fail because expressions they test have not been implemented:
+
+![](../markup/img/C_unit_tests_2.png)
+
+Re-run unit tests with the two tests failing in the terminal:
+
+```sh
+python -m unittest              # let test runner discover tests
 ```
 
-Commit with message `"changed version in pom.xml to: RELEASE-1.0.0"` to the *release*-branch
-and tag the commit with `RELEASE-1.0.0`.
+Output shows one passing and two failed tests:
 
-Push branches:
+```
+======================================================================
+FAIL: test_b_first_three_numbers (test_expressions.TestCase_b_first_three_number
+s.test_b_first_three_numbers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Sven1\svgr\workspaces\ds_cs4bd_2324\C_expressions\test_expressions.py
+", line 103, in test_b_first_three_numbers
+    self.assertEqual(self.ut1.b, [4, 12, 3])
+AssertionError: Lists differ: [] != [4, 12, 3]
 
-- `main`,
+Second list contains 3 additional elements.
+First extra element 0:
+4
 
-- `factorizer`,
+- []
++ [4, 12, 3]
 
-- `release`
+======================================================================
+FAIL: test_c_last_three_numbers (test_expressions.TestCase_c_last_three_numbers.
+test_c_last_three_numbers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Sven1\svgr\workspaces\ds_cs4bd_2324\C_expressions\test_expressions.py
+", line 117, in test_c_last_three_numbers
+    td.assertEqual(td.ut1.c, [1, 8, 7])
+AssertionError: Lists differ: [] != [1, 8, 7]
 
-to a remote repository: `mvn-fun` you can create at
-[*BHT GitLab*](https://gitlab.bht-berlin.de/)
-or another Git service such as
-[*GitHub*](https://github.com/). -->
+Second list contains 3 additional elements.
+First extra element 0:
+1
+
+- []
++ [1, 8, 7]
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+FAILED (failures=2)
+```
+Output says: `Ran 3 tests`, `FAILED (failures=2)`.
+
+When tests fail, the test report tells which tests have failed and why:
+
+  - *test_b_first_three_numbers* failed in line: 103. The test expected
+    result: `[4, 12, 3]`, but an empty list `[]` was found in the tested
+    expression: `self.b` in file `expressions.py`.
+
+  - *test_c_last_three_numbers* failed in line: 117 where the test expected
+    result: `[1, 8, 7]`, but an empty list `[]` was found in: `self.c`
+
+Tests refer to the `self.numbers` list: `[4, 12, 3, 8, 17, 12, 1, 8, 7]`.
+
+(1 Pt)
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+&nbsp;
+
+### 4.) Write Expressions
+
+In order to let tests pass, write expressions in
+[expressions.py](https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/blob/main/C_expressions/expressions.py)
+for variables `self.b` .. `self.k` according to specification, e.g. write an
+expression for `self.b` that extracts the first three numbers from `self.numbers`.
+
+Use <b>one-line expressions</b> only.
+Python's [built-in functions](https://docs.python.org/3/library/functions.html)
+are allowed, but not own functions.
+
+Tests exercise expressions with various lists. Initialization with constants
+(`self.b = [4, 12, 3]`) will hence not work.
+
+Write expression incrementally, one after the other - not all at once. Some
+expressions require thinking and reading.
+
+Once you have written an expression, uncomment the corresponding test case in 
+[test_expressions.py](https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/blob/main/C_expressions/test_expressions.py):
+and re-run the test. See if it is passing or figure out why it is failing
+from the test report.
+
+![](../markup/img/C_unit_tests_3.png)
+
+Test cases a), b) and c) are now passing.
+
+Continue until all tests pass.
+
+![](../markup/img/C_unit_tests_4.png)
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+&nbsp;
+
+### 5.) Final Test and sign-off
+
+For sign-off, change into `C_expressions` directory and copy commands into a terminal:
+
+```sh
+# Fetch test file from Gitlab and run tests for sign-off.
+# The sed-command removes comments from test cases.
+
+test_url=https://gitlab.bht-berlin.de/sgraupner/ds_cs4bd_2324/-/raw/main/C_expressions/test_expressions.py
+
+curl $test_url | \
+   sed -e 's/^#.*Test_case_/Test_case_/' | \
+   python
+```
+
+Result:
+
+```
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  7874  100  7874    0     0  55666      0 --:--:-- --:--:-- --:--:-- 56242
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.003s
+
+OK
+```
+
+11 tests succeeded.
+
+(3 Pts)
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+&nbsp;
+
+### 6.) Check Branch into your remote Repository
+
+Check branch `expressions` into your remote repository.
+
+(1 Pt)
